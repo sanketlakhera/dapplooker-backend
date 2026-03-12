@@ -2,7 +2,7 @@ export function buildTokenPrompt(tokenData, marketChartData) {
     if (!tokenData) throw new Error("Token data is required");
 
     let historyText = "";
-    if (marketChartData && marketChartData?.lenght > 0) {
+    if (marketChartData && marketChartData?.length > 0) {
         // find highest and lowest prices in the period
         const prices = marketChartData.map(data => data[1]);
         const highestPrice = Math.max(...prices);
