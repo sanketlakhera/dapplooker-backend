@@ -83,6 +83,14 @@ Swagger UI is available at:
 http://localhost:3001/api-docs
 ```
 
+The raw Swagger JSON specification is available at:
+
+```
+http://localhost:3001/api-docs.json
+```
+
+A local copy is also provided in the `swagger.json` file.
+
 ---
 
 # API Endpoints
