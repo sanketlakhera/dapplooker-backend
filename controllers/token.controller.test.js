@@ -3,6 +3,7 @@ import { describe, it, expect, vi } from "vitest";
 // mock all dependencies
 vi.mock('../services/coingecko.service.js', () => ({
     getTokenData: vi.fn(),
+    getMarketChart: vi.fn()
 }));
 
 vi.mock('../utils/promptBuilder.js', () => ({
@@ -14,7 +15,7 @@ vi.mock('../services/ai.service.js', () => ({
 }));
 
 import { getTokenInsightController } from "./token.controller.js";
-import { getTokenData } from "../services/coingecko.service.js";
+import { getMarketChart, getTokenData } from "../services/coingecko.service.js";
 import { buildTokenPrompt } from "../utils/promptBuilder.js";
 import { getTokenInsight } from "../services/ai.service.js";
 
@@ -27,7 +28,7 @@ function mockRes() {
 
 describe('getTokenInsightController', () => {
     it('should return token data with AI insight', async () => {
-        const req = { params: { id: 'bitcoin' } };
+        const req = { params: { id: 'bitcoin' }, body: { vs_currency: 'usd', history_days: 30 } };
         const res = mockRes();
 
         getTokenData.mockResolvedValue({
@@ -35,6 +36,7 @@ describe('getTokenInsightController', () => {
             current_price: 50000, market_cap: 1000000000,
             total_volume: 5000000000, price_change_24h: 2.5,
         });
+        getMarketChart.mockResolvedValue([[1, 10], [2, 12]]);
         buildTokenPrompt.mockReturnValue('test prompt');
         getTokenInsight.mockResolvedValue({
             reasoning: 'Bull Market', sentiment: 'Bullish',
@@ -52,7 +54,7 @@ describe('getTokenInsightController', () => {
 
     // coingecko error 404
     it('should return 404 when CoinGecko returns 404', async () => {
-        const req = { params: { id: 'invalidToken' } };
+        const req = { params: { id: 'invalidToken' }, body: { vs_currency: 'usd', history_days: 30 } };
         const res = mockRes();
 
         const error = new Error('Not found');
@@ -66,7 +68,7 @@ describe('getTokenInsightController', () => {
 
     // ai service failure
     it('should return 500 when AI service fails', async () => {
-        const req = { params: { id: 'bitcoin' } };
+        const req = { params: { id: 'bitcoin' }, body: { vs_currency: 'usd', history_days: 30 } };
         const res = mockRes();
 
         getTokenData.mockResolvedValue({ id: 'bitcoin', name: 'Bitcoin' });

@@ -1,4 +1,4 @@
-import { getTokenData } from '../services/coingecko.service.js';
+import { getTokenData, getMarketChart } from '../services/coingecko.service.js';
 import { buildTokenPrompt } from '../utils/promptBuilder.js';
 import { getTokenInsight } from '../services/ai.service.js';
 import { handleApiError } from '../utils/errorHandler.js';
@@ -15,10 +15,11 @@ export async function getTokenInsightController(req, res) {
         // validate optional request body
         const body = tokenInsightRequestSchema.parse(req.body);
         const tokenData = await getTokenData(tokenId);
+        const marketChartData = await getMarketChart(tokenId, body.history_days, body.vs_currency);
         if (!tokenData) {
             return sendError(res, "Token not found", 404);
         }
-        const prompt = buildTokenPrompt(tokenData);
+        const prompt = buildTokenPrompt(tokenData, marketChartData);
         const insight = await getTokenInsight(prompt);
         const response = {
             source: "coingecko",

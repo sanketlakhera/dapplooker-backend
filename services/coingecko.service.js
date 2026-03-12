@@ -22,3 +22,14 @@ export async function getTokenData(tokenId) {
         throw error;
     }
 }
+
+export async function getMarketChart(tokenId, days = 30, currency = 'usd') {
+    try {
+        const response = await axios.get(`https://api.coingecko.com/api/v3/coins/${tokenId}/market_chart?vs_currency=${currency}&days=${days}`);
+        const { data } = response;
+        return data.prices;
+    } catch (error) {
+        console.log("CoinGecko API error:", error?.message);
+        throw error;
+    }
+}

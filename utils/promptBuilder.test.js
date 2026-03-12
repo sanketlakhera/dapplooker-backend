@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { buildTokenPrompt } from "./promptBuilder.js";
 
 describe('buildTokenPrompt', () => {
@@ -10,8 +10,12 @@ describe('buildTokenPrompt', () => {
             total_volume: 120000000,
             price_change_24h: -1.2
         }
+        const marketChartData = [
+            [1700000000000, 10],
+            [1670086400000, 12]
+        ]
 
-        const prompt = buildTokenPrompt(tokenData);
+        const prompt = buildTokenPrompt(tokenData, marketChartData);
 
         // assert its a string
         expect(typeof prompt).toBe('string');
@@ -26,7 +30,11 @@ describe('buildTokenPrompt', () => {
 
     it('should handle missing fields gracefully', () => {
         const tokenData = { name: 'Bitcoin' };
-        const prompt = buildTokenPrompt(tokenData);
+        const marketChartData = [
+            [1700000000000, 10],
+            [1670086400000, 12]
+        ]
+        const prompt = buildTokenPrompt(tokenData, marketChartData);
         expect(prompt).toContain('Bitcoin');
         expect(prompt).toContain('undefined'); // missing fields show as undefined
     });
