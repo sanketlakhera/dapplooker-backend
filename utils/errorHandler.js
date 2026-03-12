@@ -9,7 +9,7 @@ export function handleApiError(error, res) {
 
     // AI Validation Failure
     if (error.message === "AI response missing required fields") {
-        return sendError(res, error.message, 503);
+        return sendError(res, error.message, 502);
     }
 
     // missing api key

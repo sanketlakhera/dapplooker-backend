@@ -1,5 +1,3 @@
-
-
 export function buildTokenPrompt(tokenData) {
     if (!tokenData) throw new Error("Token data is required");
     const prompt = `Analyze the following crypto token market data.
@@ -11,9 +9,6 @@ export function buildTokenPrompt(tokenData) {
     24h Change: ${tokenData?.price_change_24h}
 
     Return JSON in the format:
-    {
-        "reasoning": "string",
-        "sentiment": "Bullish | Neutral | Bearish"
-    }`
+    { "reasoning": "string", "sentiment": "Bullish | Neutral | Bearish" }`
     return prompt;
 }
