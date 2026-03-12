@@ -1,17 +1,19 @@
 import { getTokenData } from '../services/coingecko.service.js';
 import { buildTokenPrompt } from '../utils/promptBuilder.js';
 import { getTokenInsight } from '../services/ai.service.js';
+import { handleApiError } from '../utils/errorHandler.js';
+import { sendError, sendSuccess } from '../utils/apiResponse.js';
 
 
 export async function getTokenInsightController(req, res) {
     try {
         const tokenId = req.params.id;
         if (!tokenId) {
-            return res.status(400).json({ message: "Token ID is required" });
+            return sendError(res, "Token ID is required", 400); //res.status(400).json({ message: "Token ID is required" });
         }
         const tokenData = await getTokenData(tokenId);
         if (!tokenData) {
-            return res.status(404).json({ message: "Token not found" });
+            return sendError(res, "Token not found", 404); //res.status(404).json({ message: "Token not found" });
         }
         const prompt = buildTokenPrompt(tokenData);
         const insight = await getTokenInsight(prompt);
@@ -34,19 +36,9 @@ export async function getTokenInsightController(req, res) {
                 provider: "google", model: "gemini-2.5-flash"
             }
         };
-        return res.status(200).json(response);
+        return sendSuccess(res, response);
     } catch (error) {
         console.log("Error:", error?.message);
-        if (error.response?.status === 404) {
-            return res.status(404).json({
-                message: "Token not found on CoinGecko"
-            });
-        }
-        if (error.message === "AI response missing required fields") {
-            return res.status(502).json({
-                message: "AI returned invalid response"
-            });
-        }
-        return res.status(500).json({ message: "Internal server error" });
+        return handleApiError(error, res);
     }
 }
