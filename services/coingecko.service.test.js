@@ -1,10 +1,14 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import axios from 'axios';
-import { getTokenData } from './coingecko.service.js';
+import { getTokenData, myCache } from './coingecko.service.js';
 
 vi.mock('axios');
 
 describe('getTokenData', () => {
+    beforeEach(() => {
+        vi.clearAllMocks();
+        myCache.flushAll();
+    });
     it('should return extracted token data', async () => {
         axios.get.mockResolvedValue({
             data: {
