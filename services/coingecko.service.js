@@ -16,7 +16,7 @@ export async function getTokenData(tokenId) {
             price_change_24h: data?.market_data?.price_change_percentage_24h,
         }
     } catch (error) {
-        console.log("Error:", error);
+        console.log("CoinGecko API error:", error?.message);
         throw error;
     }
 }

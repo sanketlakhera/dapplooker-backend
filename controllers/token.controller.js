@@ -36,7 +36,17 @@ export async function getTokenInsightController(req, res) {
         };
         return res.status(200).json(response);
     } catch (error) {
-        console.log("Error:", error);
+        console.log("Error:", error?.message);
+        if (error.response?.status === 404) {
+            return res.status(404).json({
+                message: "Token not found on CoinGecko"
+            });
+        }
+        if (error.message === "AI response missing required fields") {
+            return res.status(502).json({
+                message: "AI returned invalid response"
+            });
+        }
         return res.status(500).json({ message: "Internal server error" });
     }
 }
