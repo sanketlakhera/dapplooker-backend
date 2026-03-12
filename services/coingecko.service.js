@@ -4,7 +4,7 @@ export async function getTokenData(tokenId) {
     try {
         // optional query params to reduce payload
         const response = await axios.get(`https://api.coingecko.com/api/v3/coins/${tokenId}?localization=false&tickers=false&community_data=false&developer_data=false`);
-        console.log("data for token", response.data);
+        // console.log("data for token", response.data);
         const { data } = response;
         return {
             id: data?.id,
