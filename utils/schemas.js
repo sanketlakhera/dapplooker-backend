@@ -22,3 +22,10 @@ export const tokenDataSchema = z.object({
     total_volume: z.number(),
     price_change_24h: z.number(),
 });
+
+// validates hyperliquid pnl request parameters
+export const hyperliquidPnlRequestSchema = z.object({
+    wallet: z.string().regex(/^0x[a-fA-F0-9]{40}$/, "Invalid EVM wallet address"),
+    start: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Start date must be YYYY-MM-DD"),
+    end: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "End date must be YYYY-MM-DD"),
+});
