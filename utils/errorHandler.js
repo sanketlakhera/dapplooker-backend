@@ -2,6 +2,10 @@ import { sendError } from "./apiResponse.js";
 
 
 export function handleApiError(error, res) {
+    // Zod validation error
+    if (error.name === 'ZodError') {
+        return sendError(res, error.issues?.[0]?.message || "Validation failed", 400);
+    }
     // coingecko 404
     if (error.response?.status === 404) {
         return sendError(res, "Token not found on CoinGecko", 404);

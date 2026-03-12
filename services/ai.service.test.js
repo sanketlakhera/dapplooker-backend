@@ -48,7 +48,7 @@ describe('getTokenInsight', () => {
             }
         });
 
-        await expect(getTokenInsight('test prompt')).rejects.toThrow('AI response missing required fields');
+        await expect(getTokenInsight('test prompt')).rejects.toThrow();
     });
 
     it('should throw on invalid JSON', async () => {

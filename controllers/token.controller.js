@@ -3,17 +3,20 @@ import { buildTokenPrompt } from '../utils/promptBuilder.js';
 import { getTokenInsight } from '../services/ai.service.js';
 import { handleApiError } from '../utils/errorHandler.js';
 import { sendError, sendSuccess } from '../utils/apiResponse.js';
+import { tokenInsightRequestSchema } from '../utils/schemas.js';
 
 
 export async function getTokenInsightController(req, res) {
     try {
         const tokenId = req.params.id;
         if (!tokenId) {
-            return sendError(res, "Token ID is required", 400); //res.status(400).json({ message: "Token ID is required" });
+            return sendError(res, "Token ID is required", 400);
         }
+        // validate optional request body
+        const body = tokenInsightRequestSchema.parse(req.body);
         const tokenData = await getTokenData(tokenId);
         if (!tokenData) {
-            return sendError(res, "Token not found", 404); //res.status(404).json({ message: "Token not found" });
+            return sendError(res, "Token not found", 404);
         }
         const prompt = buildTokenPrompt(tokenData);
         const insight = await getTokenInsight(prompt);

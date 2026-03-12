@@ -1,12 +1,12 @@
 import axios from 'axios';
+import { tokenDataSchema } from '../utils/schemas.js';
 
 export async function getTokenData(tokenId) {
     try {
         // optional query params to reduce payload
         const response = await axios.get(`https://api.coingecko.com/api/v3/coins/${tokenId}?localization=false&tickers=false&community_data=false&developer_data=false`);
-        // console.log("data for token", response.data);
         const { data } = response;
-        return {
+        const tokenData = {
             id: data?.id,
             symbol: data?.symbol,
             name: data?.name,
@@ -14,7 +14,9 @@ export async function getTokenData(tokenId) {
             market_cap: data?.market_data?.market_cap?.usd,
             total_volume: data?.market_data?.total_volume?.usd,
             price_change_24h: data?.market_data?.price_change_percentage_24h,
-        }
+        };
+        // validate extracted data with Zod schema
+        return tokenDataSchema.parse(tokenData);
     } catch (error) {
         console.log("CoinGecko API error:", error?.message);
         throw error;

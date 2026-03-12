@@ -1,4 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { aiResponseSchema } from "../utils/schemas.js";
 
 let model;
 
@@ -23,8 +24,6 @@ export async function getTokenInsight(prompt) {
         jsonString = text.replace("```json", "").replace("```", "").trim();
     }
     const parsed = JSON.parse(jsonString);
-    if (!parsed.reasoning || !parsed.sentiment) {
-        throw new Error("AI response missing required fields");
-    }
-    return parsed;
+    // validate AI response with Zod schema
+    return aiResponseSchema.parse(parsed);
 }
