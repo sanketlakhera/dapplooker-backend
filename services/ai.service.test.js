@@ -13,6 +13,7 @@ vi.mock('@google/generative-ai', () => ({
 
 // set the env var before importing
 process.env.GEMINI_API_KEY = 'test-key';
+process.env.GEMINI_MODEL_NAME = 'test-model';
 
 const { getTokenInsight } = await import('./ai.service.js');
 
