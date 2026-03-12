@@ -33,6 +33,12 @@ app.use(express.json());
 // Swagger UI
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
+// Serve raw Swagger JSON
+app.get('/api-docs.json', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(swaggerSpec);
+});
+
 app.get("/", (req, res) => {
     res.json({ message: "Hello World!" });
 });
