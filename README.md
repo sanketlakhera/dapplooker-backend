@@ -73,6 +73,20 @@ Server will start at:
 http://localhost:3001
 ```
 
+### 5. Run using Docker
+
+If you have Docker installed, you can easily run this application in a container without needing Node.js installed locally.
+
+1. Build the Docker image:
+   ```bash
+   docker build -t dapplooker-backend .
+   ```
+
+2. Run the Docker container (make sure your `.env` file is present):
+   ```bash
+   docker run -p 3001:3001 --env-file .env -d dapplooker-backend
+   ```
+
 ---
 
 # API Documentation
