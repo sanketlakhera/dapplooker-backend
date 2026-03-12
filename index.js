@@ -8,6 +8,7 @@ import cors from "cors";
 
 // routes import
 import tokenRoute from "./routes/token.route.js";
+import hyperliquidRoute from "./routes/hyperliquid.route.js";
 
 // Swagger configuration
 const swaggerSpec = swaggerJsdoc({
@@ -37,6 +38,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/token", tokenRoute);
+app.use("/api/hyperliquid", hyperliquidRoute);
 
 
 
