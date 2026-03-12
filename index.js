@@ -1,4 +1,6 @@
 import dotenv from "dotenv";
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
 dotenv.config();
 
 import express from "express";
@@ -7,11 +9,28 @@ import cors from "cors";
 // routes import
 import tokenRoute from "./routes/token.route.js";
 
+// Swagger configuration
+const swaggerSpec = swaggerJsdoc({
+    definition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'DappLooker API',
+            version: '1.0.0',
+            description: 'Backend service for Token Insights and HyperLiquid Wallet PnL',
+        },
+        servers: [{ url: `http://localhost:${process.env.PORT || 3000}` }],
+    },
+    apis: ['./routes/*.js'],
+});
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+
+// Swagger UI
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.get("/", (req, res) => {
     res.json({ message: "Hello World!" });
