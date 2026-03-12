@@ -39,56 +39,62 @@ const router = Router();
  *             schema:
  *               type: object
  *               properties:
- *                 source:
- *                   type: string
- *                   example: coingecko
- *                 token:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
  *                   type: object
  *                   properties:
- *                     id:
+ *                     source:
  *                       type: string
- *                       example: chainlink
- *                     symbol:
- *                       type: string
- *                       example: link
- *                     name:
- *                       type: string
- *                       example: Chainlink
- *                     current_price:
- *                       type: number
- *                       example: 7.23
- *                     market_cap:
- *                       type: number
- *                       example: 3500000000
- *                     total_volume:
- *                       type: number
- *                       example: 120000000
- *                     price_change_24h:
- *                       type: number
- *                       example: -1.2
- *                 insight:
- *                   type: object
- *                   properties:
- *                     reasoning:
- *                       type: string
- *                       example: Market stable with moderate volume
- *                     sentiment:
- *                       type: string
- *                       enum: [Bullish, Neutral, Bearish]
- *                       example: Neutral
- *                 model:
- *                   type: object
- *                   properties:
- *                     provider:
- *                       type: string
- *                       example: google
+ *                       example: coingecko
+ *                     token:
+ *                       type: object
+ *                       properties:
+ *                         id:
+ *                           type: string
+ *                           example: chainlink
+ *                         symbol:
+ *                           type: string
+ *                           example: link
+ *                         name:
+ *                           type: string
+ *                           example: Chainlink
+ *                         current_price:
+ *                           type: number
+ *                           example: 7.23
+ *                         market_cap:
+ *                           type: number
+ *                           example: 3500000000
+ *                         total_volume:
+ *                           type: number
+ *                           example: 120000000
+ *                         price_change_24h:
+ *                           type: number
+ *                           example: -1.2
+ *                     insight:
+ *                       type: object
+ *                       properties:
+ *                         reasoning:
+ *                           type: string
+ *                           example: Market stable with moderate volume
+ *                         sentiment:
+ *                           type: string
+ *                           enum: [Bullish, Neutral, Bearish]
+ *                           example: Neutral
  *                     model:
- *                       type: string
- *                       example: gemini-2.5-flash
+ *                       type: object
+ *                       properties:
+ *                         provider:
+ *                           type: string
+ *                           example: google
+ *                         model:
+ *                           type: string
+ *                           example: gemini-2.5-flash
  *       400:
- *         description: Bad request - Token ID is required
+ *         description: Bad request (e.g., missing API key, missing/invalid token ID, or Zod validation errors)
  *       404:
- *         description: Token not found
+ *         description: Token not found on CoinGecko
  *       500:
  *         description: Internal server error
  */
