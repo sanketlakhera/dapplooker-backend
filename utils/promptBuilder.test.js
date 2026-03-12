@@ -32,6 +32,6 @@ describe('buildTokenPrompt', () => {
     });
 
     it('should handle undefined tokenData', () => {
-        expect(() => buildTokenPrompt(undefined).toThrow());
+        expect(() => buildTokenPrompt(undefined)).toThrow();
     })
 });

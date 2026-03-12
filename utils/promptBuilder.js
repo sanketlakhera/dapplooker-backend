@@ -1,6 +1,7 @@
 
 
 export function buildTokenPrompt(tokenData) {
+    if (!tokenData) throw new Error("Token data is required");
     const prompt = `Analyze the following crypto token market data.
     
     Token: ${tokenData?.name}
