@@ -7,9 +7,12 @@ function getModel() {
     if (!process.env.GEMINI_API_KEY) {
         throw new Error("GEMINI_API_KEY is not configured");
     }
+    if (!process.env.GEMINI_MODEL_NAME) {
+        throw new Error("GEMINI_MODEL_NAME is not configured");
+    }
     if (!model) {
         const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-        model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+        model = genAI.getGenerativeModel({ model: process.env.GEMINI_MODEL_NAME });
     }
     return model;
 }

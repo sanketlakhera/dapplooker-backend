@@ -37,7 +37,7 @@ export async function getTokenInsightController(req, res) {
                 sentiment: insight.sentiment,
             },
             model: {
-                provider: "google", model: "gemini-2.5-flash"
+                provider: "google", model: process.env.GEMINI_MODEL_NAME
             }
         };
         return sendSuccess(res, response);
