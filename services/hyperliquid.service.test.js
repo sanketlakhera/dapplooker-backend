@@ -41,4 +41,14 @@ describe("Hyperliquid Service", () => {
         expect(axios.post).toHaveBeenCalledWith('https://api.hyperliquid.xyz/info', { type: 'clearinghouseState', user: mockWallet });
         expect(result).toEqual(mockData);
     });
+
+    it("getAssetMetadata makes correct POST request", async () => {
+        const mockData = [{ name: 'BTC' }];
+        axios.post.mockResolvedValue({ data: mockData });
+
+        const result = await import('./hyperliquid.service.js').then(m => m.getAssetMetadata());
+
+        expect(axios.post).toHaveBeenCalledWith('https://api.hyperliquid.xyz/info', { type: 'meta' });
+        expect(result).toEqual(mockData);
+    });
 });

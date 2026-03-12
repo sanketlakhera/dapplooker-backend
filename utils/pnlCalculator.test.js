@@ -43,4 +43,26 @@ describe("PnL calculator", () => {
         expect(result.summary.total_funding_usd).toBe(1);   // -2 + 3
         expect(result.summary.net_pnl_usd).toBe(59);        // 66.5 - 7.5
     });
+
+    it("handles fills and funds with undefined or missing numeric strings gracefully", () => {
+        const startStr = '2025-01-01';
+        const endStr = '2025-01-01';
+        const mockState = { marginSummary: {} }; // no accountValue
+        
+        const mockFills = [
+            { time: new Date('2025-01-01T10:00:00Z').getTime() } // missing closedPnl and fee
+        ]
+        const mockFunding = [
+            { time: new Date('2025-01-01T12:00:00Z').getTime() } // missing usdc
+        ];
+
+        const result = calculatedDailyPnl(mockFills, mockFunding, mockState, startStr, endStr);
+        
+        expect(result.daily[0].realized_pnl_usd).toBe(0);
+        expect(result.daily[0].fees_usd).toBe(0);
+        expect(result.daily[0].funding_usd).toBe(0);
+        expect(result.daily[0].net_pnl_usd).toBe(0);
+        expect(result.daily[0].equity_usd).toBe(0);
+        expect(result.summary.net_pnl_usd).toBe(0);
+    });
 });

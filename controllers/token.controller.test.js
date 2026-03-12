@@ -79,4 +79,35 @@ describe('getTokenInsightController', () => {
 
         expect(res.status).toHaveBeenCalledWith(500);
     });
+
+    // validation failure (missing id)
+    it('should return 400 when missing token id', async () => {
+        const req = { params: {}, body: {} };
+        const res = mockRes();
+
+        await getTokenInsightController(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(400);
+        expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
+            success: false,
+            error: expect.objectContaining({ message: "Token ID is required" })
+        }));
+    });
+
+    // missing token data failure
+    it('should return 404 when token data is empty', async () => {
+        const req = { params: { id: 'faketoken' }, body: {} };
+        const res = mockRes();
+
+        getTokenData.mockResolvedValue(null);
+        getMarketChart.mockResolvedValue([]);
+
+        await getTokenInsightController(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(404);
+        expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
+            success: false,
+            error: expect.objectContaining({ message: "Token not found" })
+        }));
+    });
 });

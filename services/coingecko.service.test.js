@@ -46,3 +46,30 @@ describe('getTokenData', () => {
         await expect(getTokenData('bitcoin')).rejects.toThrow('Network error');
     });
 });
+
+describe('getMarketChart', () => {
+    beforeEach(() => {
+        vi.clearAllMocks();
+        myCache.flushAll();
+    });
+
+    it('should return market chart prices', async () => {
+        const mockPrices = [[1620000000000, 50000], [1620086400000, 51000]];
+        axios.get.mockResolvedValue({
+            data: { prices: mockPrices }
+        });
+
+        const { getMarketChart } = await import('./coingecko.service.js');
+        const result = await getMarketChart('bitcoin', 30, 'usd');
+
+        expect(result).toEqual(mockPrices);
+        expect(axios.get).toHaveBeenCalledWith(expect.stringContaining('bitcoin/market_chart'));
+    });
+
+    it('should throw on api error', async () => {
+        axios.get.mockRejectedValue(new Error('API error'));
+
+        const { getMarketChart } = await import('./coingecko.service.js');
+        await expect(getMarketChart('bitcoin')).rejects.toThrow('API error');
+    });
+});
